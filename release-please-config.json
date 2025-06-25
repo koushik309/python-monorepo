@@ -4,18 +4,21 @@
     "src/code/package1": {
       "release-type": "python",
       "component": "package1",
-      "package-name": "package1"
+      "package-name": "package1",
+      "version-file": "src/code/package1/pyproject.toml"
     },
     "src/code/package2": {
       "release-type": "python",
       "component": "package2",
-      "package-name": "package2"
+      "package-name": "package2",
+      "version-file": "src/code/package2/pyproject.toml"
     },
     ".": {
       "release-type": "simple",
       "component": "monorepo-root",
       "package-name": "python-monorepo",
-      "include-component-in-tag": false
+      "include-component-in-tag": false,
+      "version-file": "root-version.txt"
     }
   },
   "plugins": ["node-workspace"],

@@ -17,18 +17,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate JSON
-        run: |
-          # Check if manifest is valid JSON
-          if ! jq empty .release-please-manifest.json 2>/dev/null; then
-            echo '{".":"1.0.0","src/code/package1":"0.1.0","src/code/package2":"0.1.0"}' > .release-please-manifest.json
-          fi
+      # - name: Setup root version file
+      #   run: |
+      #     # Create root version file if missing
+      #     if [ ! -f root-version.txt ]; then
+      #       echo "1.0.0" > root-version.txt
+      #       git add root-version.txt
+      #       git commit -m "chore: initialize root version" || true
+      #     fi
 
       - name: Run Release Please
         uses: googleapis/release-please-action@v4
         with:
-          release-type: "python"
-          manifest-file: ".release-please-manifest.json"
+          release-type: "node"
           config-file: "release-please-config.json"
           token: ${{ secrets.GITHUB_TOKEN }}
-          
+          skip-labeling: true
