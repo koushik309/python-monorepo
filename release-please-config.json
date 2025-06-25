@@ -4,17 +4,12 @@
     "src/code/package1": {
       "release-type": "python",
       "component": "package1",
-      "package-name": "package1",
-      "include-component-in-tag": false,
-      "primary": true,
-      "path": "src/code/package1"
+      "package-name": "package1"
     },
     "src/code/package2": {
       "release-type": "python",
       "component": "package2",
-      "package-name": "package2",
-      "include-component-in-tag": false,
-      "path": "src/code/package2"
+      "package-name": "package2"
     },
     ".": {
       "release-type": "simple",
@@ -25,9 +20,6 @@
   },
   "plugins": ["node-workspace"],
   "always-link-local": true,
-  "changelog-host": "https://github.com/koushik309/python-monorepo",
   "separate-pull-requests": false,
-  "monorepo-tags": true,
-  "bump-each-commit": true,
-  "changelog-path": "CHANGELOG.md"
+  "monorepo-tags": true
 }
