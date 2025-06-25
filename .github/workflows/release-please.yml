@@ -19,17 +19,20 @@ jobs:
 
       # - name: Setup root version file
       #   run: |
-      #     # Create root version file if missing
       #     if [ ! -f root-version.txt ]; then
       #       echo "1.0.0" > root-version.txt
       #       git add root-version.txt
-      #       git commit -m "chore: initialize root version" || true
+      #       git config user.name "GitHub Actions"
+      #       git config user.email "actions@users.noreply.github.com"
+      #       git commit -m "chore: initialize root version" || echo "No changes to commit"
+      #       git push origin main
       #     fi
 
       - name: Run Release Please
         uses: googleapis/release-please-action@v4
         with:
-          release-type: "node"
-          config-file: "release-please-config.json"
+          # Change from "node" to "python"
+          release-type: "python"
+          config-file: ".release-please-config.json"
           token: ${{ secrets.GITHUB_TOKEN }}
           skip-labeling: true
