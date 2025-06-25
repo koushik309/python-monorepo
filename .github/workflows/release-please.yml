@@ -18,6 +18,18 @@ jobs:
           https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission | jq
           
       # Main Release Please step
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Debug manifest
+        run: |
+          echo "Current manifest:"
+          cat .release-please-manifest.json
+          echo -e "\nDirectory structure:"
+          tree -L 3 src/code
+
       - name: Run Release Please
         uses: googleapis/release-please-action@v4
         with:
