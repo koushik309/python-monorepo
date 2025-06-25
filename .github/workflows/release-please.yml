@@ -11,24 +11,31 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      # Debug step to check token permissions (optional)
-      - name: Check token permissions
-        run: |
-          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/repos/${{ github.repository }}/collaborators/${{ github.actor }}/permission | jq
-          
-      # Main Release Please step
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Debug manifest
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install jq (JSON processor)
+        run: sudo apt-get install -y jq
+
+      - name: Validate and Fix Manifest
         run: |
-          echo "Current manifest:"
+          if [ ! -f .release-please-manifest.json ]; then
+            echo '{".":"1.0.0","src/code/package1":"0.1.0","src/code/package2":"0.1.0"}' > .release-please-manifest.json
+          fi
+          sed -i '1s/^\xEF\xBB\xBF//' .release-please-manifest.json
+          tr -cd '\11\12\15\40-\176' < .release-please-manifest.json > temp.json
+          mv temp.json .release-please-manifest.json
+          jq . .release-please-manifest.json > temp.json
+          mv temp.json .release-please-manifest.json
+          echo "Manifest content:"
           cat .release-please-manifest.json
-          echo -e "\nDirectory structure:"
-          tree -L 3 src/code
 
       - name: Run Release Please
         uses: googleapis/release-please-action@v4
