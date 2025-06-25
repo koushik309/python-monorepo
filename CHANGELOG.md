@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0](https://github.com/koushik309/python-monorepo/compare/v0.2.0...v0.3.0) (2025-06-25)
+
+
+### Features
+
+* add code folder as a package. ([ed6c73c](https://github.com/koushik309/python-monorepo/commit/ed6c73c402d83279941b5829022f6ac22b0af13a))
+* add new feature ([c8539c6](https://github.com/koushik309/python-monorepo/commit/c8539c631671193794c4b56c35a26e192baf3643))
+* add new feature ([142fa4f](https://github.com/koushik309/python-monorepo/commit/142fa4f0a76af879e88c9588af213010d1c427ec))
+* addd new feature ([c688716](https://github.com/koushik309/python-monorepo/commit/c6887161e0d0b92fa2dcd000f4e11789101f4f62))
+
+
+### Bug Fixes
+
+* small change in the config file ([5f99f5c](https://github.com/koushik309/python-monorepo/commit/5f99f5cb4b7fb89345016608811ebe0bc65f8d23))
+* small change in the manifest file ([d753427](https://github.com/koushik309/python-monorepo/commit/d753427ff025854a803fa20cf9f814d642f3bd86))
+
 ## [0.2.0](https://github.com/koushik309/python-monorepo/compare/v0.1.0...v0.2.0) (2025-06-25)
 
 
