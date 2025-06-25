@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/koushik309/python-monorepo/compare/v0.1.0...v0.2.0) (2025-06-25)
+
+
+### Features
+
+* final release test ([713ee16](https://github.com/koushik309/python-monorepo/commit/713ee161b1748c55b103d4ce2e27b3e15924f1cd))
+* final release test ([baed2a5](https://github.com/koushik309/python-monorepo/commit/baed2a54ed5fe82efc02b5853156d8baa680a1ea))
+
 ## 0.1.0 (2025-06-25)
 
 
