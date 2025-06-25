@@ -1,6 +1,12 @@
 {
   "bump-minor-pre-major": true,
   "packages": {
+    "src/code": {
+      "release-type": "python",
+      "component": "code",
+      "package-name": "code",
+      "version-file": "src/code/pyproject.toml"
+    },
     "src/code/package1": {
       "release-type": "python",
       "component": "package1",

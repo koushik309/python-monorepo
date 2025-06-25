@@ -6,7 +6,8 @@ authors = ["Kasper Primdal Lauritzen <git@kplauritzen.dk>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-common = { path = "../common/", develop = true }
+code = { path = "../", develop = true }
+package2 = { path = "../package2", develop = true }
 
 [tool.poetry.dev-dependencies]
 
