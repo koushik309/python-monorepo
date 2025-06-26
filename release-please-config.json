@@ -19,13 +19,13 @@
       "package-name": "package2",
       "version-file": "src/code/package2/pyproject.toml"
     },
-    ".": {
-      "release-type": "simple",
-      "component": "monorepo-root",
-      "package-name": "python-monorepo",
-      "include-component-in-tag": false,
-      "version-file": "root-version.txt"
-    }
+    #".": {
+     # "release-type": "simple",
+     # "component": "monorepo-root",
+    #  "package-name": "python-monorepo",
+    #  "include-component-in-tag": false,
+    #  "version-file": "root-version.txt"
+    #}
   },
   "plugins": ["node-workspace"],
   "always-link-local": true,
