@@ -37,17 +37,14 @@ jobs:
           config-file: "release-please-config1.json"
           token: ${{ secrets.GITHUB_TOKEN }}
           skip-labeling: true
-      - name: Run Release Please
-        uses: google-github-actions/release-please-action@v3
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          config-file: "release-please-config.json"
-          command: manifest
-          release-type: node
-          package-name: python-monorepo
-          monorepo-tags: true
-          # Add these for better monorepo support
-          bump-minor-pre-major: true
-          include-v-in-tag: true
-          pull-request-title-pattern: "chore: release ${version}"
-          pull-request-body-pattern: "Release ${version} of python-monorepo"  
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "chore: update subtrees"
+          title: "chore: update subtrees"
+          body: "Auto-update of subtrees from external repositories"
+          branch: "update-subtrees-${{ github.run_id }}"  # Fixed branch name
+          base: main
+          labels: dependencies, automated
