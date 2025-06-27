@@ -1,11 +1,8 @@
 name: Update Subtrees
 on:
   schedule:
-    - cron: '0 0 * * *'  # Daily updates at 00:00 UTC
+    - cron: '0 0 * * *'  # Daily updates
   workflow_dispatch:      # Manual trigger
-  push:
-    branches:
-      - main
 
 jobs:
   update:
@@ -42,10 +39,6 @@ jobs:
           commit-message: "chore: update subtrees"
           title: "chore: update subtrees"
           body: "Auto-update of subtrees from external repositories"
-          branch: "update-subtrees/$(date +%s)"
+          branch: "update-subtrees-${{ github.run_id }}"
           base: main
           labels: dependencies, automated
-
-      - name: Output PR URL
-        run: |
-          echo "PR created at ${{ steps.create-pr.outputs.pull-request-url }}"
