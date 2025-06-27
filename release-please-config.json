@@ -1,4 +1,4 @@
-﻿{
+{
   "bootstrap-sha": "cf3210b",
   "separate-pull-requests": false,
   "monorepo-tags": true,
@@ -17,13 +17,13 @@
       "include-v-in-tag": true
     },
     "source/code/RepoB": {
-      "release-type": "poetry",  
+      "release-type": "poetry",
       "component": "RepoB",
       "changelog-path": "source/code/RepoB/CHANGELOG.md",
       "extra-files": ["source/code/RepoB/README.md"]
     },
     "source/code/service-b": {
-      "release-type": "poetry", 
+      "release-type": "poetry",
       "component": "service-b",
       "changelog-path": "source/code/service-b/CHANGELOG.md",
       "extra-files": ["source/code/service-b/README.md"]
