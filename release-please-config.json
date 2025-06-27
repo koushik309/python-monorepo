@@ -1,4 +1,4 @@
-{
+﻿{
   "bootstrap-sha": "cf3210b",
   "separate-pull-requests": false,
   "monorepo-tags": true,
@@ -17,16 +17,14 @@
       "include-v-in-tag": true
     },
     "source/code/RepoB": {
-      "release-type": "toml",
+      "release-type": "poetry",  
       "component": "RepoB",
-      "version-file": "source/code/RepoB/pyproject.toml",
       "changelog-path": "source/code/RepoB/CHANGELOG.md",
       "extra-files": ["source/code/RepoB/README.md"]
     },
     "source/code/service-b": {
-      "release-type": "toml",
+      "release-type": "poetry", 
       "component": "service-b",
-      "version-file": "source/code/service-b/pyproject.toml",
       "changelog-path": "source/code/service-b/CHANGELOG.md",
       "extra-files": ["source/code/service-b/README.md"]
     }
