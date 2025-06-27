@@ -9,24 +9,19 @@
     {"type": "chore", "section": "Maintenance", "hidden": false}
   ],
   "packages": {
-    "": {
-      "release-type": "simple",
-      "component": "python-monorepo",
-      "bump-minor-pre-major": true,
-      "changelog-path": "CHANGELOG.md",
-      "include-v-in-tag": true
-    },
     "source/code/RepoB": {
-      "release-type": "poetry",
+      "release-type": "python",
       "component": "RepoB",
-      "changelog-path": "source/code/RepoB/CHANGELOG.md",
-      "extra-files": ["source/code/RepoB/README.md"]
+      "package-name": "RepoB",
+      "version-file": "source/code/RepoB/package1/pyproject.toml"
+
     },
     "source/code/service-b": {
-      "release-type": "poetry",
+      "release-type": "python",
       "component": "service-b",
-      "changelog-path": "source/code/service-b/CHANGELOG.md",
-      "extra-files": ["source/code/service-b/README.md"]
+      "package-name": "service-b",
+      "version-file": "source/code/service-b/pyproject.toml"
+
     }
   }
 }
