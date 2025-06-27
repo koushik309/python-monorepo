@@ -1,34 +1,34 @@
-{
-  "bump-minor-pre-major": true,
-  "packages": {
-    "src/code": {
-      "release-type": "python",
-      "component": "code",
-      "package-name": "code",
-      "version-file": "src/code/pyproject.toml"
-    },
-    "src/code/package1": {
-      "release-type": "python",
-      "component": "package1",
-      "package-name": "package1",
-      "version-file": "src/code/package1/pyproject.toml"
-    },
-    "src/code/package2": {
-      "release-type": "python",
-      "component": "package2",
-      "package-name": "package2",
-      "version-file": "src/code/package2/pyproject.toml"
-    },
-    #".": {
-     # "release-type": "simple",
-     # "component": "monorepo-root",
-    #  "package-name": "python-monorepo",
-    #  "include-component-in-tag": false,
-    #  "version-file": "root-version.txt"
-    #}
-  },
-  "plugins": ["node-workspace"],
-  "always-link-local": true,
+﻿{
+  "bootstrap-sha": "cf3210b",
   "separate-pull-requests": false,
-  "monorepo-tags": true
+  "monorepo-tags": true,
+  "plugins": ["node-workspace"],
+  "changelog-sections": [
+    {"type": "feat", "section": "Features"},
+    {"type": "fix", "section": "Bug Fixes"},
+    {"type": "chore", "section": "Maintenance", "hidden": false}
+  ],
+  "packages": {
+    "": {
+      "release-type": "simple",
+      "component": "python-monorepo",
+      "bump-minor-pre-major": true,
+      "changelog-path": "CHANGELOG.md",
+      "include-v-in-tag": true
+    },
+    "source/code/RepoB": {
+      "release-type": "toml",
+      "component": "RepoB",
+      "version-file": "source/code/RepoB/pyproject.toml",
+      "changelog-path": "source/code/RepoB/CHANGELOG.md",
+      "extra-files": ["source/code/RepoB/README.md"]
+    },
+    "source/code/service-b": {
+      "release-type": "toml",
+      "component": "service-b",
+      "version-file": "source/code/service-b/pyproject.toml",
+      "changelog-path": "source/code/service-b/CHANGELOG.md",
+      "extra-files": ["source/code/service-b/README.md"]
+    }
+  }
 }
