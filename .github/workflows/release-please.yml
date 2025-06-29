@@ -59,25 +59,27 @@ jobs:
         id: check_updates
         run: |
           needs_update=false
-          repob_update=false
-          serviceb_update=false
-
+          
+          # Compare RepoB versions
           if [[ "${{ steps.repob_latest.outputs.version }}" != "${{ steps.current_versions.outputs.REPOB_CURRENT }}" ]]; then
-            echo "RepoB update needed"
-            repob_update=true
+            echo "RepoB update needed: ${{ steps.current_versions.outputs.REPOB_CURRENT }} -> ${{ steps.repob_latest.outputs.version }}"
+            echo "REPOB_UPDATE=true" >> $GITHUB_ENV
             needs_update=true
           fi
-
+          
+          # Compare service-b versions
           if [[ "${{ steps.serviceb_latest.outputs.version }}" != "${{ steps.current_versions.outputs.SERVICEB_CURRENT }}" ]]; then
-            echo "service-b update needed"
-            serviceb_update=true
+            echo "service-b update needed: ${{ steps.current_versions.outputs.SERVICEB_CURRENT }} -> ${{ steps.serviceb_latest.outputs.version }}"
+            echo "SERVICEB_UPDATE=true" >> $GITHUB_ENV
             needs_update=true
           fi
-
-          echo "repob_update=$repob_update" >> $GITHUB_OUTPUT
-          echo "serviceb_update=$serviceb_update" >> $GITHUB_OUTPUT
-
-          if $needs_update; then
+          
+          # Set final flag using proper boolean comparison
+          if [ "$needs_update" = true ]; then
+            echo "updates_needed=true" >> $GITHUB_OUTPUT
+          else
+            echo "updates_needed=false" >> $GITHUB_OUTPUT
+          fi
       - name: Update RepoB (if needed)
         if: ${{ steps.check_updates.outputs.repob_update == 'true' }}
         run: |
