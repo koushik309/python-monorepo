@@ -1,5 +1,5 @@
 {
-  "bootstrap-sha": "cf3210b",
+  
   "separate-pull-requests": false,
   "monorepo-tags": true,
   "plugins": ["node-workspace"],
