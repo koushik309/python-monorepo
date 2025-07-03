@@ -39,19 +39,24 @@ jobs:
           echo "API response:"
           echo "$CONTENT"
 
-          BASE64_CONTENT=$(echo "$CONTENT" | grep "content" | sed -E 's/.*"content": "(.*)",/\1/' | tr -d '\n')
+          # Extract multiline base64 content using grep and sed
+          BASE64_CONTENT=$(echo "$CONTENT" | sed -n '/"content": "/,/^ *"/p' | sed -E 's/^[[:space:]]*"content": "?//;s/"?,?$//' | tr -d '\n')
+
           if [ -z "$BASE64_CONTENT" ]; then
             echo "Error: Base64 content is empty. Check if the file exists in the repository."
             exit 1
           fi
 
-          echo "$BASE64_CONTENT" | base64 -d > decoded_pyproject.toml
+          # Decode safely
+          echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml
+
           echo "Decoded pyproject.toml:"
           cat decoded_pyproject.toml
 
           VERSION=$(grep -o 'version = "[^"]*"' decoded_pyproject.toml | sed -E 's/version = "(.*)"/\1/')
           echo "Extracted LATEST_VERSION=$VERSION"
           echo "LATEST_VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
 
       - name: Get current version
         id: current-version
