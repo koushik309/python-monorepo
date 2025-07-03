@@ -34,26 +34,26 @@ jobs:
           set -e
           echo "Fetching latest version from private repository..."
 
-          # Fetch full JSON response
+          # Fetch content and save to file
           curl -sL -H "Authorization: token $GH_TOKEN" \
-            "https://api.github.com/repos/koushik309/Test-pvt/contents/src/code/package1/pyproject.toml" \
-            > content.json
+            "https://api.github.com/repos/koushik309/Test-pvt/contents/src/code/package1/pyproject.toml" > content.json
 
-          # Extract base64 content safely (remove quotes, remove \n, preserve all lines)
-          BASE64_CONTENT=$(sed -n '/"content": "/,/^  *"encoding"/p' content.json | \
-            sed 's/^[[:space:]]*"content": "//;s/"$//' | grep -v 'encoding' | tr -d '\n')
+          # Extract "content" field, remove JSON escaping (\n), and decode
+          BASE64_ESCAPED=$(sed -n 's/^[[:space:]]*"content": "\(.*\)",$/\1/p' content.json)
+
+          # Convert escaped \n to real newlines
+          BASE64_CONTENT=$(echo -e "$BASE64_ESCAPED")
 
           # Validate
           if [ -z "$BASE64_CONTENT" ]; then
             echo "❌ Base64 content is empty."
-            cat content.json  # helpful debug output
+            cat content.json
             exit 1
           fi
 
           # Decode
           echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml || {
-            echo "❌ Failed to decode base64. Dumping raw string for debug:"
-            echo "$BASE64_CONTENT"
+            echo "❌ Failed to decode base64"
             exit 1
           }
 
@@ -64,7 +64,7 @@ jobs:
           VERSION=$(grep -o 'version = "[^"]*"' decoded_pyproject.toml | sed -E 's/version = "(.*)"/\1/')
           echo "✅ Extracted LATEST_VERSION=$VERSION"
           echo "LATEST_VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
-          
+
       - name: Get current version
         id: current-version
         run: |
