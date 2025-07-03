@@ -34,30 +34,37 @@ jobs:
           set -e
           echo "Fetching latest version from private repository..."
 
-          CONTENT=$(curl -sL -H "Authorization: token $GH_TOKEN" \
-            "https://api.github.com/repos/koushik309/Test-pvt/contents/src/code/package1/pyproject.toml")
+          # Fetch full JSON response
+          curl -sL -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/koushik309/Test-pvt/contents/src/code/package1/pyproject.toml" \
+            > content.json
 
-          # Extract and clean the base64-encoded "content" value (multiline-safe)
-          BASE64_CONTENT=$(echo "$CONTENT" | sed -n '/"content": "/,/^  *"encoding"/p' | sed 's/^.*"content": "//;s/"$//' | grep -v 'encoding' | tr -d '\n')
+          # Extract base64 content safely (remove quotes, remove \n, preserve all lines)
+          BASE64_CONTENT=$(sed -n '/"content": "/,/^  *"encoding"/p' content.json | \
+            sed 's/^[[:space:]]*"content": "//;s/"$//' | grep -v 'encoding' | tr -d '\n')
 
-          # Confirm valid base64 string
+          # Validate
           if [ -z "$BASE64_CONTENT" ]; then
-            echo "❌ Base64 content is empty. Check permissions or the file path."
+            echo "❌ Base64 content is empty."
+            cat content.json  # helpful debug output
             exit 1
           fi
 
-          # Decode to file
-          echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml
+          # Decode
+          echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml || {
+            echo "❌ Failed to decode base64. Dumping raw string for debug:"
+            echo "$BASE64_CONTENT"
+            exit 1
+          }
 
           echo "✅ Decoded pyproject.toml:"
           cat decoded_pyproject.toml
 
-          # Extract version from the decoded file
+          # Extract version
           VERSION=$(grep -o 'version = "[^"]*"' decoded_pyproject.toml | sed -E 's/version = "(.*)"/\1/')
           echo "✅ Extracted LATEST_VERSION=$VERSION"
           echo "LATEST_VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
-
-
+          
       - name: Get current version
         id: current-version
         run: |
