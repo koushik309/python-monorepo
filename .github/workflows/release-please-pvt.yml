@@ -33,29 +33,31 @@ jobs:
         run: |
           set -e
           echo "Fetching latest version from private repository..."
+
+          # Get raw content and isolate the base64-encoded value (can span multiple lines)
           CONTENT=$(curl -sL -H "Authorization: token $GH_TOKEN" \
             "https://api.github.com/repos/koushik309/Test-pvt/contents/src/code/package1/pyproject.toml")
 
-          echo "API response:"
-          echo "$CONTENT"
+          # Extract the base64 string properly, handling multiline content
+          BASE64_CONTENT=$(echo "$CONTENT" | sed -n '/"content": "/,/^  *"encoding"/p' | sed -e 's/^.*"content": "//' -e 's/"$//' | tr -d '\n')
 
-          # Extract multiline base64 content using grep and sed
-          BASE64_CONTENT=$(echo "$CONTENT" | sed -n '/"content": "/,/^ *"/p' | sed -E 's/^[[:space:]]*"content": "?//;s/"?,?$//' | tr -d '\n')
-
+          # Sanity check
           if [ -z "$BASE64_CONTENT" ]; then
-            echo "Error: Base64 content is empty. Check if the file exists in the repository."
+            echo "❌ Base64 content is empty. Check the repo path or token permissions."
             exit 1
           fi
 
-          # Decode safely
+          # Decode base64 string into the TOML file
           echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml
 
-          echo "Decoded pyproject.toml:"
+          echo "✅ Decoded pyproject.toml:"
           cat decoded_pyproject.toml
 
+          # Extract the version string
           VERSION=$(grep -o 'version = "[^"]*"' decoded_pyproject.toml | sed -E 's/version = "(.*)"/\1/')
-          echo "Extracted LATEST_VERSION=$VERSION"
-          echo "LATEST_VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "✅ Extracted LATEST_VERSION=$VERSION"
+          echo "LATEST_VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+
 
 
       - name: Get current version
