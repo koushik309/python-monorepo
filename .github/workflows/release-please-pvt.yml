@@ -46,23 +46,23 @@ jobs:
 
           # Validate
           if [ -z "$BASE64_CONTENT" ]; then
-            echo "❌ Base64 content is empty."
+            echo "Base64 content is empty."
             cat content.json
             exit 1
           fi
 
           # Decode
           echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml || {
-            echo "❌ Failed to decode base64"
+            echo "Failed to decode base64"
             exit 1
           }
 
-          echo "✅ Decoded pyproject.toml:"
+          echo "Decoded pyproject.toml:"
           cat decoded_pyproject.toml
 
           # Extract version
           VERSION=$(grep -o 'version = "[^"]*"' decoded_pyproject.toml | sed -E 's/version = "(.*)"/\1/')
-          echo "✅ Extracted LATEST_VERSION=$VERSION"
+          echo "Extracted LATEST_VERSION=$VERSION"
           echo "LATEST_VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Get current version
@@ -102,27 +102,27 @@ jobs:
           manifest-file: release-please-manifest.json
         continue-on-error: true
 
-      - name: Update default PR message title to user defined
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prs = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-            });
+      # - name: Update default PR message title to user defined
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       const prs = await github.rest.pulls.list({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         state: 'open',
+      #       });
 
-            const releasePR = prs.data.find(pr => pr.title.includes('release'));
-            if (releasePR) {
-              const lines = releasePR.body.split('\n');
-              if (lines[0].trim() === ':robot: I have created a release *beep* *boop*') {
-                lines[0] = 'Release PR generated for version update:';
-                const updatedBody = lines.join('\n');
+      #       const releasePR = prs.data.find(pr => pr.title.includes('release'));
+      #       if (releasePR) {
+      #         const lines = releasePR.body.split('\n');
+      #         if (lines[0].trim() === ':robot: I have created a release *beep* *boop*') {
+      #           lines[0] = 'Release PR generated for version update:';
+      #           const updatedBody = lines.join('\n');
 
-                await github.rest.pulls.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: releasePR.number,
-                  body: updatedBody,
-                });
-              }
+      #           await github.rest.pulls.update({
+      #             owner: context.repo.owner,
+      #             repo: context.repo.repo,
+      #             pull_number: releasePR.number,
+      #             body: updatedBody,
+      #           });
+      #         }

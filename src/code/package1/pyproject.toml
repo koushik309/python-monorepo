@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "service1"
-version = "0.1.0"
+version = "0.0.1"
 description = ""
 authors = ["Kasper Primdal Lauritzen <git@kplauritzen.dk>"]
 
