@@ -1,5 +1,30 @@
 # Changelog
 
+## [3.0.0](https://github.com/koushik309/python-monorepo/compare/v2.0.0...v3.0.0) (2025-07-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* checking api connection
+* checking api connection
+* checking api connection
+* checking api connection
+* checking api connection
+* checking api connection
+* checking api connection
+* checking api connection
+
+### Features
+
+* checking api connection ([68004a8](https://github.com/koushik309/python-monorepo/commit/68004a8a6ede984db87fa899f0ac3dbd8a05efe0))
+* checking api connection ([21b9623](https://github.com/koushik309/python-monorepo/commit/21b962385c76d91a6bf1ffbae6eaa874ffe7bc12))
+* checking api connection ([8a2b9f4](https://github.com/koushik309/python-monorepo/commit/8a2b9f485f5f148d31930490522cc6225aae5f76))
+* checking api connection ([a9499d6](https://github.com/koushik309/python-monorepo/commit/a9499d60a9abd15c3eaeda694254b6ac2e13cba8))
+* checking api connection ([4527a73](https://github.com/koushik309/python-monorepo/commit/4527a739d708d0d5ff29dcf42db56ebd6cd1cc0e))
+* checking api connection ([4f1d0e6](https://github.com/koushik309/python-monorepo/commit/4f1d0e65c90adac467e128eed5e99d96471f94a5))
+* checking api connection ([4fa19ca](https://github.com/koushik309/python-monorepo/commit/4fa19cabf303bead25e6d96cef15b89c44c5338d))
+* checking api connection ([a3966ba](https://github.com/koushik309/python-monorepo/commit/a3966bacf76d1c0a983300b8db8c1811d20e9ead))
+
 ## [2.0.0](https://github.com/koushik309/python-monorepo/compare/v1.0.0...v2.0.0) (2025-07-03)
 
 
