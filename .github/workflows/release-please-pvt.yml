@@ -98,7 +98,7 @@ jobs:
         with:
           #release-type: python
           #token: ${{ secrets.GITHUB_TOKEN }}
-          config-file: release-please-config-pvt.json
+          config-file: release-please-config.json
           manifest-file: release-please-manifest.json
 
       # - name: Update default PR message title to user defined
