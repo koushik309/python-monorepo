@@ -3,26 +3,22 @@
   "packages": {
     "src/code/package1": {
       "packageName": "package1",
-      "release-type": "python",
-      "version-file": "src/code/package1/pyproject.toml",
-      "component": "package1"
+      "releaseType": "python",
+      "version-file": "src/code/package1/pyproject.toml"
     },
     "src/code/package2": {
       "packageName": "package2",
-      "release-type": "python",
-      "version-file": "src/code/package2/pyproject.toml",
-      "component": "package2"
+      "releaseType": "python",
+      "version-file": "src/code/package2/pyproject.toml"
     }
   },
   "changelog-sections": [
     { "type": "feat", "section": "Features" },
     { "type": "fix", "section": "Bug Fixes" },
+    { "type": "chore", "section": "Chores" },
     { "type": "docs", "section": "Documentation" },
     { "type": "test", "section": "Tests" },
-    { "type": "build", "section": "Build System Changes" },
-    { "type": "chore", "section": "Chores" },
-    { "type": "ci", "section": "Continuous Integration" },
-    { "type": "deps", "section": "Dependencies" },
+    { "type": "ci", "section": "CI/CD" },
     { "type": "BREAKING CHANGE", "section": "Breaking Changes" }
   ]
 }
