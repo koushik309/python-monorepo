@@ -3,12 +3,12 @@
   "packages": {
     "src/code/package1": {
       "packageName": "package1",
-      "releaseType": "python",
+      "release-type": "python",
       "version-file": "src/code/package1/pyproject.toml"
     },
     "src/code/package2": {
       "packageName": "package2",
-      "releaseType": "python",
+      "release-type": "python",
       "version-file": "src/code/package2/pyproject.toml"
     }
   },
