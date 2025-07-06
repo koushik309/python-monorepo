@@ -132,134 +132,13 @@
       #             body: updatedBody,
       #           });
       #         }
-# name: Release Please action private repo
-
-# on:
-#   push:
-#     branches: [ main ]
-#   workflow_dispatch:
-#   workflow_call:
-
-# env:
-#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-# jobs:
-#   release-please:
-#     runs-on: ubuntu-latest
-#     env:
-#       DEBUG: release-please*
-#       PRIVATE_REPO: koushik309/Test-pvt
-#       BRANCH: main
-
-#     steps:
-#       - name: Checkout the repository
-#         uses: actions/checkout@v4
-
-#       - name: List files for debugging
-#         run: |
-#           ls -lR src/code/package1/
-
-#       - name: Debug - Show config and manifest
-#         run: |
-#           echo "===== CONFIG ====="
-#           cat release-please-config.json
-#           echo "===== MANIFEST ====="
-#           cat .release-please-manifest.json
-
-#       - name: Get latest version from the private repo
-#         id: latest-version
-#         env:
-#           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
-#         run: |
-#           set -e
-#           echo "Fetching latest version from private repository..."
-
-#           curl -sL -H "Authorization: token $GH_TOKEN" \
-#             "https://api.github.com/repos/${PRIVATE_REPO}/contents/src/code/package1/pyproject.toml?ref=${BRANCH}" > content.json
-
-#           BASE64_ESCAPED=$(sed -n 's/^[[:space:]]*"content": "\(.*\)",$/\1/p' content.json)
-#           BASE64_CONTENT=$(echo -e "$BASE64_ESCAPED")
-
-#           if [ -z "$BASE64_CONTENT" ]; then
-#             echo "Base64 content is empty."
-#             cat content.json
-#             exit 1
-#           fi
-
-#           echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml || {
-#             echo "Failed to decode base64"
-#             exit 1
-#           }
-
-#           echo "Decoded pyproject.toml:"
-#           cat decoded_pyproject.toml
-
-#           VERSION=$(grep -o 'version = "[^"]*"' decoded_pyproject.toml | sed -E 's/version = "(.*)"/\1/')
-#           echo "Extracted LATEST_VERSION=$VERSION"
-#           echo "LATEST_VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
-
-#       - name: Get current version
-#         id: current-version
-#         run: |
-#           if [ ! -f src/code/package1/pyproject.toml ]; then
-#             echo "Local pyproject.toml not found!"
-#             exit 1
-#           fi
-
-#           CURRENT_VERSION=$(grep -o 'version = "[^"]*"' src/code/package1/pyproject.toml | sed -E 's/version = "(.*)"/\1/')
-#           echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
-
-#       - name: Check for version update
-#         id: check-updates
-#         run: |
-#           if [[ "${{ steps.latest-version.outputs.LATEST_VERSION }}" != "${{ steps.current-version.outputs.CURRENT_VERSION }}" ]]; then
-#             echo "updates_needed=true" >> $GITHUB_OUTPUT
-#           else
-#             echo "updates_needed=false" >> $GITHUB_OUTPUT
-#           fi
-
-#       - name: Proceed if updates are needed
-#         if: steps.check-updates.outputs.updates_needed == 'true'
-#         run: |
-#           sed -i 's/version = ".*/version = "'${{ steps.latest-version.outputs.LATEST_VERSION }}'"/' src/code/package1/pyproject.toml
-#           echo "Updated pyproject.toml version to latest."
-
-#           echo "Updating .release-please-manifest.json..."
-#           cp .release-please-manifest.json temp_manifest.json
-#           awk -v v="${{ steps.latest-version.outputs.LATEST_VERSION }}" '
-#             BEGIN { updated = 0 }
-#             {
-#               if ($0 ~ /"src\/code\/package1"/) {
-#                 print "  \"src/code/package1\": \"" v "\"", (substr($0,length($0),1)=="," ? "," : "")
-#                 updated = 1
-#               } else {
-#                 print $0
-#               }
-#             }
-#             END {
-#               if (!updated) print "  \"src/code/package1\": \"" v "\""
-#             }
-#           ' temp_manifest.json > .release-please-manifest.json
-
-#       - name: release-please-action
-#         id: release-please
-#         uses: googleapis/release-please-action@v4
-#         with:
-#           token: ${{ secrets.PAT_TOKEN }}
-#           config-file: release-please-config.json
-#           manifest-file: .release-please-manifest.json
-
-#Testing
-name: Release Please
+name: Release Please action private repo
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write
+  workflow_call:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -267,13 +146,134 @@ env:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    env:
+      DEBUG: release-please*
+      PRIVATE_REPO: koushik309/Test-pvt
+      BRANCH: main
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout the repository
         uses: actions/checkout@v4
 
-      - name: Run Release Please
+      - name: List files for debugging
+        run: |
+          ls -lR src/code/package1/
+
+      - name: Debug - Show config and manifest
+        run: |
+          echo "===== CONFIG ====="
+          cat release-please-config.json
+          echo "===== MANIFEST ====="
+          cat .release-please-manifest.json
+
+      - name: Get latest version from the private repo
+        id: latest-version
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          set -e
+          echo "Fetching latest version from private repository..."
+
+          curl -sL -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${PRIVATE_REPO}/contents/src/code/package1/pyproject.toml?ref=${BRANCH}" > content.json
+
+          BASE64_ESCAPED=$(sed -n 's/^[[:space:]]*"content": "\(.*\)",$/\1/p' content.json)
+          BASE64_CONTENT=$(echo -e "$BASE64_ESCAPED")
+
+          if [ -z "$BASE64_CONTENT" ]; then
+            echo "Base64 content is empty."
+            cat content.json
+            exit 1
+          fi
+
+          echo "$BASE64_CONTENT" | base64 --decode > decoded_pyproject.toml || {
+            echo "Failed to decode base64"
+            exit 1
+          }
+
+          echo "Decoded pyproject.toml:"
+          cat decoded_pyproject.toml
+
+          VERSION=$(grep -o 'version = "[^"]*"' decoded_pyproject.toml | sed -E 's/version = "(.*)"/\1/')
+          echo "Extracted LATEST_VERSION=$VERSION"
+          echo "LATEST_VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Get current version
+        id: current-version
+        run: |
+          if [ ! -f src/code/package1/pyproject.toml ]; then
+            echo "Local pyproject.toml not found!"
+            exit 1
+          fi
+
+          CURRENT_VERSION=$(grep -o 'version = "[^"]*"' src/code/package1/pyproject.toml | sed -E 's/version = "(.*)"/\1/')
+          echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Check for version update
+        id: check-updates
+        run: |
+          if [[ "${{ steps.latest-version.outputs.LATEST_VERSION }}" != "${{ steps.current-version.outputs.CURRENT_VERSION }}" ]]; then
+            echo "updates_needed=true" >> $GITHUB_OUTPUT
+          else
+            echo "updates_needed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Proceed if updates are needed
+        if: steps.check-updates.outputs.updates_needed == 'true'
+        run: |
+          sed -i 's/version = ".*/version = "'${{ steps.latest-version.outputs.LATEST_VERSION }}'"/' src/code/package1/pyproject.toml
+          echo "Updated pyproject.toml version to latest."
+
+          echo "Updating .release-please-manifest.json..."
+          cp .release-please-manifest.json temp_manifest.json
+          awk -v v="${{ steps.latest-version.outputs.LATEST_VERSION }}" '
+            BEGIN { updated = 0 }
+            {
+              if ($0 ~ /"src\/code\/package1"/) {
+                print "  \"src/code/package1\": \"" v "\"", (substr($0,length($0),1)=="," ? "," : "")
+                updated = 1
+              } else {
+                print $0
+              }
+            }
+            END {
+              if (!updated) print "  \"src/code/package1\": \"" v "\""
+            }
+          ' temp_manifest.json > .release-please-manifest.json
+
+      - name: release-please-action
+        id: release-please
         uses: googleapis/release-please-action@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+#Testing
+# name: Release Please
+
+# on:
+#   push:
+#     branches: [ main ]
+#   workflow_dispatch:
+
+# permissions:
+#   contents: write
+#   pull-requests: write
+
+# env:
+#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+# jobs:
+#   release-please:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+
+#       - name: Run Release Please
+#         uses: googleapis/release-please-action@v4
+#         with:
+#           token: ${{ secrets.GITHUB_TOKEN }}
+#           config-file: release-please-config.json
+#           manifest-file: .release-please-manifest.json
