@@ -99,7 +99,7 @@ jobs:
           #release-type: python
           #token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
-          manifest-file: release-please-manifest.json
+          manifest-file: .release-please-manifest.json
 
       # - name: Update default PR message title to user defined
       #   uses: actions/github-script@v7
