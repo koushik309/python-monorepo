@@ -324,11 +324,28 @@ jobs:
 
       - name: Update pyproject.toml version
         run: |
-          sed -i 's/^version = ".*"/version = "${{ steps.fetch_version.outputs.latest_version }}"/' src/code/package1/pyproject.toml
+          sed -i "s/^version = \".*\"/version = \"${{ steps.fetch_version.outputs.latest_version }}\"/" src/code/package1/pyproject.toml
 
-      - name: Update manifest file
+      - name: Update manifest file without jq
         run: |
-          jq '."src/code/package1" = "${{ steps.fetch_version.outputs.latest_version }}"' .release-please-manifest.json > tmp.json && mv tmp.json .release-please-manifest.json
+          VERSION="${{ steps.fetch_version.outputs.latest_version }}"
+          FILE=".release-please-manifest.json"
+          PACKAGE="src/code/package1"
+          TMP=".tmp_manifest.json"
+
+          awk -v pkg="$PACKAGE" -v ver="$VERSION" '
+            BEGIN { found=0 }
+            {
+              if ($0 ~ "\""pkg"\"") {
+                sub(/: *\"[^\"]*\"/, ": \""ver"\"")
+                found=1
+              }
+              print
+            }
+            END {
+              if (!found) print "Error: Package not found in manifest" > "/dev/stderr"
+            }
+          ' "$FILE" > "$TMP" && mv "$TMP" "$FILE"
 
       - name: Commit version bump
         run: |
