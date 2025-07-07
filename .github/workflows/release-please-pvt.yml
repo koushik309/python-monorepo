@@ -352,7 +352,7 @@ jobs:
           git config user.name "koushik309"
           git config user.email "koushikvarma9999@gmail.com"
           git add src/code/package1/pyproject.toml .release-please-manifest.json
-          git commit -m "chore: sync version to ${{ steps.fetch_version.outputs.latest_version }} from private repo"
+          git diff --cached --quiet || git commit -m "chore: sync version to ${{ steps.fetch_version.outputs.latest_version }} from private repo"
           git push
 
       - name: Run Release Please
